@@ -19,14 +19,12 @@ export function getSortedPostsData() {
 
     return {
       id,
-      ...matterResult.data
+      ...(matterResult.data as { date: string, title: string })
     };
   });
-  return allPostData.sort(({ date: a }, { date: b }) => {
-    if( a < b ){
+  return allPostData.sort((a, b) => {
+    if( a.date < b.date ){
       return 1;
-    }else if(a = b) {
-      return 0;
     }else {
       return -1;
     }
@@ -44,7 +42,7 @@ export function getAllPostIds() {
   });
 }
 
-export async function getPostData(id) {
+export async function getPostData( id: string ) {
   const filePath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(filePath);
 
@@ -58,7 +56,7 @@ export async function getPostData(id) {
   return {
     id,
     contentHtml,
-    ...matterResult.data,
+    ...(matterResult.data as { date: string, title: string }),
   };
 }
 
